@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+    <% include partials/header.ejs %>
+    <body>
+        
+        <div class="container-fluid" >
+            <div class="row">
+                <h1 class="text-center">Innovaccer Entry management system</h1>
+            </div><br><br>
+            <!-- style="color:white; background-image:linear-gradient(rgba(0,0,0,0.8),rgba(0,0,0,0.8)),url('https://d2aq6dqxahe4ka.cloudfront.net/assets/uploads/challenges/63527927973.jpg'); background-repeat: no-repeat;background-size: cover;background-attachment: fixed;" -->
+            <div class="row" >
+                <div class="col-md-1"></div>
+                <div class="col-md-4" style="border: 1px solid peru;padding :10px;">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="text-center">Welcome to Innovaccer</h2>
+                        </div>
+                        <div class="card-body">
+                            <form action="/visitor" method="POST">
+                                <div class="form-group">
+                                    <label for="name">Full Name</label>
+                                    <input required="required" type="text" class="form-control" name="name" id="name">
+                                </div>
+                                <div class="form-group">
+                                    <label for="email">Email</label>
+                                    <input required="required" type="email" class="form-control" name="email" id="email">
+                                </div>
+                                <div class="form-group">
+                                    <label for="phone">Phone</label>
+                                    <input required="required" type="text" max="10" class="form-control" id="phone" name="phone">
+                                </div>
+                                <div class="form-group">
+                                    <label for="phone">Select host - </label>
+                                        <%
+                                            if(hosts.length>0)
+                                            {
+                                                %>
+
+                                                <select name="hostid">
+                                                    <%
+                                                        hosts.forEach(function(details)
+                                                        {
+                                                            %>
+                                                            <option value= "<%= details._id %>"><%=details.name%></option>
+                                                            <%
+                                                        });
+                                                    %>
+                                                </select>
+                                                
+                                                <%
+                                            }
+                                            else
+                                            {
+                                                %>
+                                                <p class="text-danger"> No hosts available</p>
+                                                <%
+                                            }
+                                        %>
+                                </div>
+                                
+                                <div class="text-center"><button type="submit" class="btn btn-primary">Submit</button></div>
+                            </form>
+                            
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col-md-1"></div>
+                <div class="col-md-4" style="border: 1px solid peru;padding :10px;">
+                        <div class="card">
+                            <div class="card-header">
+                                <h2 class="text-center">Event completion entry</h2>
+                            </div><br><br>
+                            <div class="card-body">
+                                <form action="/complete" method="POST">
+                                    <div class="form-group">
+                                        <label for="name">Select host : </label>
+                                        <%
+                                            if(hosts.length>0)
+                                            {
+                                                %>
+
+                                                <select id="host_id_select" name="id">
+                                                    <option disabled selected>Select host</option>
+                                                    <%
+                                                        hosts.forEach(function(details)
+                                                        {
+                                                            %>
+                                                            <option value= "<%= details._id %>"><%=details.name%></option>
+                                                            <%
+                                                        });
+                                                    %>
+                                                </select>
+                                                
+                                                <%
+                                            }
+                                            else
+                                            {
+                                                %>
+                                                <p class="text-danger"> No hosts available</p>
+                                                <%
+                                            }
+                                        %>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="name">Select your name : </label>
+                                        <select name="visitor" id="abc">
+                                            <option disabled selected>Select Host first</option>
+                                        </select>    
+                                    </div>
+                                    <div><button type="submit" <% if(hosts.length ==0){ %> <%= 'disabled' %><%}%> class="btn btn-primary">Mark as completed</button></div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                <div class="col-md-2"></div>
+            </div>
+            <div class="row" style="padding-top : 20px;">
+                <div class="col-md-12 text-center">
+                    <a class="text-center" href="http://localhost:3000/hosta">Click here for host entry</a>
+                </div>
+            </div>
+        </div>
+        <% include partials/footer.ejs %>
+        <script type="text/javascript">
+            $("#host_id_select").on('change',function()
+            {
+                $.ajax({
+                    type : 'POST',
+                    url : 'http://localhost:3000/fetch/'+$("#host_id_select").val(),
+                    success : function(data)
+                    {
+                        console.log(data);
+                        var a = "";
+                        for(var i=0;i<data.length;i++)
+                        {
+                            a+='<option value="'+data[i]._id+'">'+data[i].name+'</option>'
+                        }
+                        $("#abc").html(a);
+                        
+                    }
+                });
+            });
+        </script>
+    </body>
+</html>
