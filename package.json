@@ -14,7 +14,7 @@
     "express": "^4.17.1",
     "fast2sms": "^1.0.3",
     "mongodb": "^3.3.4",
-    "nodemailer": "^6.3.1",
+    "nodemailer": "^6.4.16",
     "unirest": "^0.6.0"
   }
 }
